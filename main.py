@@ -157,7 +157,7 @@ class MainWindow(QMainWindow):
         self.main_widget = MainWindow()
         # self.main_widget.setObjectName("MainWidget")
         # self.main_widget.setStyleSheet("#MainWidget { background-color: #000; }")
-        self.thu_vien = QPushButton("Hãy click tôi để chuyển vào thư viện nhé !!!", self.main_widget)
+        self.thu_vien = QPushButton("Thu vien!!!", self.main_widget)
         self.thu_vien.setGeometry(50, 50, 250, 50)
         
         # Truyền danh sách bài hát self.list vào Main_List_Music_MainWindow
