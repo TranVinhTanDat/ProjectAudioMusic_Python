@@ -1,8 +1,5 @@
 PySide2
-spotipy
 mysql-connector
-dotenv
-python-dotenv
 mutagen
 urllib3
 charset-normalizer
@@ -12,7 +9,6 @@ ffmpeg-python==0.2.0
 filetype
 future
 mysql-connector-python
-numpy
 packaging
 pygame
 pycaw

@@ -1,30 +1,19 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel,QDesktopWidget
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDesktopWidget
 
 from ui.Danh_Sach_Nhac import Ui_MainWindow as Danh_Sach_Nhac_Ui_MainWindow
 from ui.Ui_AlbumCollectionWindow import Ui_AlbumCollectionWindow
 from ui.Ui_ArtistCollectionWindow import Ui_ArtistCollectionWindow
 from ui.Ui_PlaylistCollectionWindow import Ui_PlaylistCollectionWindow
 from ui.Ui_DanhSachNhacWindow import Ui_DanhSachNhacWindow
-# from ui.Ui_SongCollectionWindow import Ui_SongCollectionWindow
 
-from main import MainWindow
 from controller.MusicController import MusicController
 from loadImageFromUrl import loadImageFromUrl
 from dao.AlbumDAO import AlbumDAO
 from dao.SongDAO import SongDao
 from object.music import Music
 
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDesktopWidget
-
-from controller.MusicController import MusicController
-from dao.AlbumDAO import AlbumDAO
-from dao.SongDAO import SongDao
-from ui.Ui_DanhSachNhacWindow import Ui_DanhSachNhacWindow
 
 class Main_List_Music_MainWindow(QMainWindow):
     def __init__(self, songs):  

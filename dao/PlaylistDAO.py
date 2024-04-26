@@ -13,7 +13,13 @@ class PlaylistDAO:
             password='',
             database='musicplayer'
         )
-
+    def check_song_in_playlist(self, playlist_id, song_id):
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT COUNT(*) FROM playlist_song WHERE playlist_id = %s AND song_id = %s",
+                        (playlist_id, song_id))
+            count = cursor.fetchone()[0]
+            cursor.close()
+            return count > 0
     def get_all_playlists(self):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM playlist")

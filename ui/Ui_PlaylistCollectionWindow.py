@@ -270,12 +270,18 @@ class AddSongDialog(QtWidgets.QDialog):
         selected_playlist_id = self.playlist_combobox.currentData()
         if selected_song_id and selected_playlist_id:
             playlistDAO = PlaylistDAO()
-            playlistDAO.add_song_to_playlist(selected_playlist_id, selected_song_id)
-            QtWidgets.QMessageBox.information(self, "Success", "Added song to playlist successfully!")
-            self.accept()
-            self.added_song.emit()
+            # Kiểm tra xem bài hát đã tồn tại trong playlist chưa
+            if playlistDAO.check_song_in_playlist(selected_playlist_id, selected_song_id):
+                QtWidgets.QMessageBox.warning(self, "Error", "This song already exists in the playlist.")
+            else:
+                # Nếu bài hát chưa tồn tại trong playlist, thêm vào
+                playlistDAO.add_song_to_playlist(selected_playlist_id, selected_song_id)
+                QtWidgets.QMessageBox.information(self, "Success", "Added song to playlist successfully!")
+                self.accept()
+                self.added_song.emit()
         else:
             QtWidgets.QMessageBox.warning(self, "Error", "Please select both song and playlist.")
+
 
 class EditPlaylistForm(QtWidgets.QDialog):
     playlist_edited = QtCore.pyqtSignal()

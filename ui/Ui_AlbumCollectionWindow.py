@@ -5,6 +5,7 @@ from dao.AlbumDAO import AlbumDAO
 # Other imports remain the same
 from Ui_SongCollectionWindow import Ui_SongCollectionWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
+from unity.main_list_music import *
 
 class Ui_AlbumCollectionWindow(object):
     def setupUi(self, AlbumCollectionWindow, albums):  

@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from loadImageFromUrl import loadImageFromUrl
+from unity.main_list_music import *
 
 class Ui_SongCollectionWindow(object):
     def setupUi(self, MainWindow, songs):

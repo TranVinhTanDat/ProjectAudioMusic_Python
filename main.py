@@ -1,5 +1,9 @@
 import sys
 sys.path.append('C:/Users/Admin/Downloads/ProjectAudio_Report/ProjectPythonAudio/dao')
+from dao.TypeDAO import TypeDao
+from dao.SongDAO import SongDao
+from dao.SingerDAO import SingerDao
+from unity.main_list_music import Main_List_Music_MainWindow
 import random
 import threading as th 
 import pygame
@@ -9,34 +13,22 @@ import tkinter
 import re
 from tkinter import filedialog
 from mutagen.mp3 import MP3
-# import main_list_music
 from threading import Timer  
 from tkinter import messagebox
-from tkinter import filedialog
-import tkinter
 import os
-from database.db import connect
 import requests
 from io import BytesIO
-from PyQt5 import QtGui
-
-# from timer import timer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QWidget, QPushButton, QDesktopWidget
-from PyQt5 import QtCore, QtGui, QtWidgets
-# from PyQt5.QtMultimedia import QMediaPlayer,QMediaContent
-# from PyQt5.QtMultimediaWidgets import QVideoWidget
-# from PyQt5.QtCore import QUrl
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QWidget, QPushButton, QDesktopWidget, QLabel
 from ui.nhac import Ui_MainWindow
-# from main_list_music import Main_List_Music_MainWindow as MainWindowListMusic
-# from main_list_music import Main_List_Music_MainWindow
-from object.music import *
+from object.music import Music
+from dao.SongDAO import SongDao
+from controller.MusicController import MusicController
 from unity.volume import *
-from dao.SongDAO import *
-from controller.MusicController import *
-from unity.main_list_music import *
 from loadImageFromUrl import loadImageFromUrl
 from PyQt5.QtCore import QPropertyAnimation, QRect
-from PyQt5.QtWidgets import QLabel
+
+
 class RepeatTimer(Timer):  
     def run(self):  
         while not self.finished.wait(self.interval):  
@@ -508,38 +500,40 @@ class MainWindow(QMainWindow):
     
 
     def add_guest(self):
-        rowPosition = self.uic.table_list.rowCount()
-        self.uic.table_list.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.uic.table_list.insertRow(rowPosition)
-        label = ["Tên bài hát", "Thể loại", "Ca sĩ"]
-        numcols = 3
-        numrows = len(self.listTemp)      
-        self.uic.table_list.setRowCount(numrows)
-        self.uic.table_list.setColumnCount(numcols)  
-        self.uic.table_list.setHorizontalHeaderLabels(label)
-        header = self.uic.table_list.horizontalHeader()       
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+            rowPosition = self.uic.table_list.rowCount()
+            self.uic.table_list.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+            self.uic.table_list.insertRow(rowPosition)
+            label = ["Tên bài hát", "Thể loại", "Ca sĩ"]
+            numcols = 3
+            numrows = len(self.listTemp)      
+            self.uic.table_list.setRowCount(numrows)
+            self.uic.table_list.setColumnCount(numcols)  
+            self.uic.table_list.setHorizontalHeaderLabels(label)
+            header = self.uic.table_list.horizontalHeader()       
+            header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+            header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+            header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
-        index = 0
-        for value in self.listTemp:
-            # Kiểm tra nếu value là đối tượng Music
-            if isinstance(value, Music):
-                name = value.name
-                
-                # Lấy thông tin chi tiết về thể loại từ cơ sở dữ liệu
-                type_obj = TypeDao().selectTypeById(value.idType)
-                type_name = type_obj.name if type_obj else "Unknown"
-                
-                # Lấy thông tin chi tiết về ca sĩ từ cơ sở dữ liệu
-                singer_obj = SingerDao().selectSingerById(value.idSinger)
-                singer_name = singer_obj.name if singer_obj else "Unknown"
-                
-                self.uic.table_list.setItem(index, 0, QtWidgets.QTableWidgetItem(name))
-                self.uic.table_list.setItem(index, 1, QtWidgets.QTableWidgetItem(type_name))
-                self.uic.table_list.setItem(index, 2, QtWidgets.QTableWidgetItem(singer_name))
-                index += 1
+            index = 0
+            for value in self.listTemp:
+                # Kiểm tra nếu value là đối tượng Music
+                if isinstance(value, Music):
+                    name = value.name
+                    
+                    # Lấy thông tin chi tiết về thể loại từ cơ sở dữ liệu
+                    type_obj = TypeDao().selectTypeById(value.idType)
+                    type_name = type_obj.name if type_obj else "Unknown"
+                    
+                    # Lấy thông tin chi tiết về ca sĩ từ cơ sở dữ liệu
+                    singer_obj = SingerDao().selectSingerById(value.idSinger)
+                    singer_name = singer_obj.name if singer_obj else "Unknown"
+                    
+                    self.uic.table_list.setItem(index, 0, QtWidgets.QTableWidgetItem(name))
+                    self.uic.table_list.setItem(index, 1, QtWidgets.QTableWidgetItem(type_name))
+                    self.uic.table_list.setItem(index, 2, QtWidgets.QTableWidgetItem(singer_name))
+                    index += 1
+
+
 
     def duration(self, song):
         return int(float((ffmpeg.probe(song)['format']['duration'])))
@@ -581,6 +575,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_win = MainWindow()
     main_win.check_database_connection()
+    main_win.add_guest()  # Di chuyển dòng này ra khỏi phương thức __init__
     main_win.show()
     sys.exit(app.exec())
-    
+

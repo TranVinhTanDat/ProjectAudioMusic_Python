@@ -5,7 +5,7 @@ from loadImageFromUrl import loadImageFromUrl
 from dao.SongDAO import SongDao
 from dao.TypeDAO import TypeDao
 from Ui_SongCollectionWindow import Ui_SongCollectionWindow
-
+from unity.main_list_music import *
 class Ui_DanhSachNhacWindow(object):
     def setupUi(self, DanhSachNhacWindow, songs):  
         self.songs = songs

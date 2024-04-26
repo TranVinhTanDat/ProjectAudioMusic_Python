@@ -165,12 +165,16 @@ class AddMusicDialog(QtWidgets.QDialog):
             self.song_combobox.addItem(song.name, song.id)
 
     def add_song_to_playlist(self):  # Define the method to add the song to the playlist
-        selected_song_id = self.song_combobox.currentData()
-        if selected_song_id:
-            playlistDAO = PlaylistDAO()
-            playlistDAO.add_song_to_playlist(self.current_playlist_id, selected_song_id)
-            QMessageBox.information(self, "Success", "Added song to playlist successfully!")
-            self.accept()
-            self.added_song.emit()
-        else:
-            QMessageBox.warning(self, "Error", "Please select a song.")
+            selected_song_id = self.song_combobox.currentData()
+            if selected_song_id:
+                playlistDAO = PlaylistDAO()
+                # Kiểm tra xem bài hát đã tồn tại trong playlist chưa
+                if playlistDAO.check_song_in_playlist(self.current_playlist_id, selected_song_id):
+                    QMessageBox.warning(self, "Error", "The selected song already exists in the playlist.")
+                else:
+                    playlistDAO.add_song_to_playlist(self.current_playlist_id, selected_song_id)
+                    QMessageBox.information(self, "Success", "Added song to playlist successfully!")
+                    self.accept()
+                    self.added_song.emit()
+            else:
+                QMessageBox.warning(self, "Error", "Please select a song.")

@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from dao.SingerDAO import SingerDao
 from loadImageFromUrl import loadImageFromUrl
 from Ui_ArtistSongCollectionWindow import Ui_ArtistSongCollectionWindow
-
+from unity.main_list_music import *
 class Ui_ArtistCollectionWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
