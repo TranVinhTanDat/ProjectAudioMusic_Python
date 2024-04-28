@@ -9,11 +9,18 @@ class Ui_SongCollectionWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
+        # Tạo một QLabel để hiển thị hình ảnh nền
+        self.background_label = QtWidgets.QLabel(self.centralwidget)
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
+        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setObjectName("background_label")
+
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(0, 70, 622, 791))
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 620, 789))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 641, 789))
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
 
         for i, song in enumerate(songs):

@@ -1,6 +1,9 @@
 import sys
 sys.path.append('C:/Users/Admin/Downloads/ProjectAudio_Report/ProjectPythonAudio')
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QPixmap  # Import QPixmap để làm việc với hình ảnh
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel  # Import các widget chính
+
 from dao.PlaylistDAO import PlaylistDAO
 from dao.TypeDAO import TypeDao
 from dao.SongDAO import SongDao
@@ -8,6 +11,7 @@ from Ui_PlaylistSongCollectionWindow import Ui_PlaylistSongCollectionWindow
 from loadImageFromUrl import loadImageFromUrl
 import traceback
 from PyQt5.QtWidgets import QApplication, QMainWindow
+import os
 
 class Ui_PlaylistCollectionWindow(object):
     def setupUi(self, MainWindow):
@@ -17,6 +21,14 @@ class Ui_PlaylistCollectionWindow(object):
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+
+        # Tạo một QLabel để hiển thị hình ảnh nền
+        self.background_label = QtWidgets.QLabel(self.centralwidget)
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
+        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setObjectName("background_label")
 
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -146,7 +158,15 @@ class Ui_PlaylistCollectionWindow(object):
             playlistImage = QtWidgets.QLabel(groupBox)
             playlistImage.setGeometry(QtCore.QRect(4, 20, 161, 111))
             playlistImage.setText("")
-            pixmap = loadImageFromUrl(playlist.image) if playlist.image else QtGui.QPixmap("image/default_playlist.jpg")
+            
+            # Kiểm tra nếu đường dẫn là URL hợp lệ, thì tải từ URL, ngược lại sử dụng hình ảnh từ đường dẫn file
+            if playlist.image and playlist.image.startswith("http"):
+                pixmap = loadImageFromUrl(playlist.image)
+            elif playlist.image and os.path.exists(playlist.image):
+                pixmap = QtGui.QPixmap(playlist.image)
+            else:
+                pixmap = QtGui.QPixmap("image/tai_nghe.jpg")
+            
             playlistImage.setPixmap(pixmap)
             playlistImage.setScaledContents(True)
             playlistImage.setObjectName(f"playlistImage_{i+1}")
@@ -168,6 +188,8 @@ class Ui_PlaylistCollectionWindow(object):
             self.gridLayout.addWidget(groupBox, i // 3, i % 3)
 
         self.scrollAreaWidgetContents.update()
+
+
 
     def show_add_music_dialog(self):
         self.add_song_dialog = AddSongDialog()
@@ -203,16 +225,37 @@ class AddPlaylistForm(QtWidgets.QDialog):
 
         self.playlist_name_input = QtWidgets.QLineEdit()
         self.playlist_image_input = QtWidgets.QLineEdit()
+
+        self.browse_button = QtWidgets.QPushButton("Browse")
+        self.browse_button.clicked.connect(self.browse_image)  
+
         layout.addWidget(QtWidgets.QLabel("Playlist Name:"))
         layout.addWidget(self.playlist_name_input)
-        layout.addWidget(QtWidgets.QLabel("Image URL:"))
+        layout.addWidget(QtWidgets.QLabel("Image URL or Path:"))
         layout.addWidget(self.playlist_image_input)
+
+        # Thêm QLabel để hiển thị hình ảnh
+        self.image_label = QtWidgets.QLabel()
+        layout.addWidget(self.image_label)
+
+        layout.addWidget(self.browse_button)
 
         self.add_button = QtWidgets.QPushButton("Add")
         self.add_button.clicked.connect(self.add_playlist)
         layout.addWidget(self.add_button)
 
         self.setLayout(layout)
+
+    def browse_image(self):
+        file_dialog = QtWidgets.QFileDialog(self)
+        file_dialog.setNameFilter("Images (*.png *.jpg *.bmp)")
+        file_dialog.setViewMode(QtWidgets.QFileDialog.Detail)
+        if file_dialog.exec_():
+            file_path = file_dialog.selectedFiles()[0]
+            self.playlist_image_input.setText(file_path)
+            # Cập nhật hình ảnh trên QLabel khi chọn tập tin
+            pixmap = QtGui.QPixmap(file_path)
+            self.image_label.setPixmap(pixmap.scaledToWidth(200))  # Chỉnh kích thước hình ảnh để nó vừa với QLabel
 
     def add_playlist(self):
         playlist_name = self.playlist_name_input.text()
@@ -227,6 +270,9 @@ class AddPlaylistForm(QtWidgets.QDialog):
                 self.parent().reload_interface()
         else:
             QtWidgets.QMessageBox.warning(self, "Warning", "Please enter a playlist name.")
+
+
+
 
 
 class AddSongDialog(QtWidgets.QDialog):

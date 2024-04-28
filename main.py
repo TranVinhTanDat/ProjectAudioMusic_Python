@@ -27,7 +27,11 @@ from controller.MusicController import MusicController
 from unity.volume import *
 from loadImageFromUrl import loadImageFromUrl
 from PyQt5.QtCore import QPropertyAnimation, QRect
+from database.db import connect
 
+from mutagen.id3 import ID3, APIC
+from PIL import Image
+from io import BytesIO
 
 class RepeatTimer(Timer):  
     def run(self):  
@@ -187,10 +191,11 @@ class MainWindow(QMainWindow):
         root = tkinter.Tk()
         root.withdraw()  # Ẩn cửa sổ tkinter
         currdir = "/"
-        root.sourceFile = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
+        root.sourceFile = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select an audio file')
+        
         if len(root.sourceFile) > 0:
             link = root.sourceFile
-            audio = MP3(link)
+            audio = MP3(link, ID3=ID3)  # Đảm bảo ID3 được tải
             
             # Lấy thông tin từ tag ID3
             name_music = audio.tags.get('TIT2', 'Unknown')
@@ -211,20 +216,23 @@ class MainWindow(QMainWindow):
                 # Nếu không, thêm nghệ sĩ mới vào cơ sở dữ liệu và lấy id của nghệ sĩ mới
                 artist_id = self.controller.addSinger(artist_music)
 
-            # Lấy thông tin về hình ảnh (nếu có) từ tag ID3
+            # Lấy dữ liệu hình ảnh từ tag ID3 (APIC)
+            image_path = None
             image_data = audio.tags.get('APIC:', None)
             if image_data:
-                # Nếu có dữ liệu hình ảnh, lấy đường dẫn hình ảnh từ đó
-                # Ví dụ: image_path = 'path/to/image.jpg'
-                image_path = 'path/to/image.jpg'  # Thay đổi thành đường dẫn thực tế của hình ảnh
-            else:
+                # Lưu dữ liệu hình ảnh thành tệp
+                image_path = "image_" + os.path.basename(link) + ".jpg"  # Đường dẫn tệp mới
+                with open(image_path, 'wb') as img_file:
+                    img_file.write(image_data.data)  # Lưu dữ liệu hình ảnh
+            
+            if not image_path:
                 # Nếu không có dữ liệu hình ảnh, sử dụng hình ảnh mặc định
                 image_path = 'https://i.scdn.co/image/ab67706f0000000281722192322800ae99c2ed06'
             
             # Xác định hoặc gán giá trị cho biến type_name
-            type_name = "Pop"  # Ví dụ: bạn có thể xác định thể loại bài hát từ dữ liệu hoặc cố định nếu muốn
-
-            # Thêm bài hát với thông tin về nghệ sĩ và thể loại đã xác định
+            type_name = "Pop"  # Xác định thể loại bài hát
+            
+            # Thêm bài hát với thông tin nghệ sĩ, đường dẫn hình ảnh, và thể loại
             self.controller.addMusic(link, name_music, artist_id, image_path, type_name)
 
             self.list = self.controller.listSong()

@@ -4,10 +4,20 @@ from PyQt5.QtGui import QPainter, QPainterPath, QPixmap, QTransform
 from PyQt5.QtCore import Qt  # Đảm bảo import Qt để dùng Qt.Horizontal
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
+        MainWindow.setObjectName("Home Music Player")
         MainWindow.setFixedSize(641, 1000)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+
+        # Thêm một QLabel để hiển thị hình ảnh nền
+        self.background_label = QtWidgets.QLabel(self.centralwidget)
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
+        self.background_label.setPixmap(QtGui.QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
+        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setObjectName("background_label")
+
+        # Các phần còn lại của giao diện như trong mã của bạn
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(170, 60, 241, 241))
         self.label.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -171,37 +181,37 @@ class Ui_MainWindow(object):
         self.tim_kiem.raise_()
         self.icon.raise_()
 
-# Không đổi tên widget_2
+        # Không đổi tên widget_2
         self.widget_2 = QtWidgets.QWidget(self.centralwidget)
         self.widget_2.setGeometry(QtCore.QRect(0, 380, 621, 51))
         self.widget_2.setObjectName("widget_2")
 
         # Sử dụng QSlider cho thanh trượt
-        self.noi_dung_mp3 = QtWidgets.QSlider(Qt.Horizontal, self.widget_2)  # Không đổi tên
-        self.noi_dung_mp3.setGeometry(QtCore.QRect(60, 10, 551, 31))  # Vị trí và kích thước
-        self.noi_dung_mp3.setMinimum(0)  # Giá trị nhỏ nhất
-        self.noi_dung_mp3.setMaximum(100)  # Giá trị lớn nhất
-        self.noi_dung_mp3.setValue(10)  # Giá trị mặc định để trùng với hình ảnh
-        self.noi_dung_mp3.setOrientation(Qt.Horizontal)  # Thanh trượt ngang
+        self.noi_dung_mp3 = QtWidgets.QSlider(Qt.Horizontal, self.widget_2)
+        self.noi_dung_mp3.setGeometry(QtCore.QRect(60, 10, 551, 31))  
+        self.noi_dung_mp3.setMinimum(0)  
+        self.noi_dung_mp3.setMaximum(100) 
+        self.noi_dung_mp3.setValue(10)
+        self.noi_dung_mp3.setOrientation(Qt.Horizontal)  
 
-        # Cài đặt CSS để tạo thanh trượt giống như trong hình
-        self.noi_dung_mp3.setStyleSheet("""
-            QSlider::groove:horizontal {
-                background: #404040;  # Màu xám như trong hình
-                height: 8px;
-                border-radius: 4px;
-            }
-            QSlider::sub-page:horizontal {
-                background: #00ff00;  # Màu xanh lá cây
-                border-radius: 4px;
-            }
-            QSlider::handle:horizontal {
-                background: white;  # Màu trắng như trong hình
-                border-radius: 50%;
-                width: 12px;
-                height: 12px;
-            }
-        """)
+        # # Cài đặt CSS để tạo thanh trượt giống như trong hình
+        # self.noi_dung_mp3.setStyleSheet("""
+        #     QSlider::groove:horizontal {
+        #         background: #404040;  # Màu xám như trong hình
+        #         height: 8px;
+        #         border-radius: 4px;
+        #     }
+        #     QSlider::sub-page:horizontal {
+        #         background: #00ff00;  # Màu xanh lá cây
+        #         border-radius: 4px;
+        #     }
+        #     QSlider::handle:horizontal {
+        #         background: white;  # Màu trắng như trong hình
+        #         border-radius: 50%;
+        #         width: 12px;
+        #         height: 12px;
+        #     }
+        # """)
 
         # Nhãn thời gian
         self.time_label = QtWidgets.QLabel(self.widget_2)
@@ -246,40 +256,75 @@ class Ui_MainWindow(object):
         self.rotateTimer.timeout.connect(self.rotateImage)
         self.rotateTimer.start(20)  # Xoay hình ảnh mỗi 100 ms
 
-        self.setCircularImage("image/guitar.jpg")  # Nên đặt sau các khởi tạo thuộc tính liên quan
+        self.setCircularImage("image/MUSIC.jpg")  # Nên đặt sau các khởi tạo thuộc tính liên quan
         self.rotateTimer = QTimer()
         self.rotateTimer.timeout.connect(self.rotateImage)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+         # Tạo một danh sách chứa các nút
+        self.buttons = [self.ngau_nhien, self.lap_lai, self.tam_dung, self.dung_lai, self.phat, self.lui_bai, self.chuyen_bai]
+
+        # Khởi tạo một từ điển để lưu trạng thái của các nút
+        self.button_states = {button: False for button in self.buttons}
+
+        # Kết nối sự kiện clicked của các nút với một hàm xử lý
+        for button in self.buttons:
+            if button in [self.ngau_nhien, self.lap_lai]:
+                # Đối với các nút ngau_nhien và lap_lai, sử dụng một hàm xử lý riêng
+                button.clicked.connect(lambda checked=False, button=button: self.toggle_special_buttons(button))
+            else:
+                # Đối với các nút còn lại, sử dụng hàm xử lý chung
+                button.clicked.connect(lambda checked=False, button=button: self.toggle_button_color(button))
+
+    def toggle_special_buttons(self, button):
+        # Kiểm tra trạng thái hiện tại của nút
+        if self.button_states[button]:
+            # Nếu nút đã được nhấn trước đó, đặt màu mặc định và cập nhật trạng thái
+            button.setStyleSheet("")
+            self.button_states[button] = False
+        else:
+            # Nếu nút chưa được nhấn trước đó, đặt màu và cập nhật trạng thái
+            button.setStyleSheet("background-color: rgba(0, 255, 0, 100);")
+            self.button_states[button] = True
+
+    def toggle_button_color(self, button):
+        # Duyệt qua danh sách các nút
+        for btn in self.buttons:
+            # Nếu nút được nhấn là nút hiện tại, thiết lập màu, ngược lại đặt lại màu mặc định
+            if btn is button:
+                btn.setStyleSheet("background-color: rgba(0, 255, 0, 100);")
+            else:
+                btn.setStyleSheet("") 
+
 
     def setCircularImage(self, image_path):
-        original_pixmap = QtGui.QPixmap(image_path)  # Load the original pixmap
-        circular_pixmap = QtGui.QPixmap(original_pixmap.size())  # Create a new pixmap with the original size
-        circular_pixmap.fill(QtCore.Qt.transparent)  # Set a transparent background for the pixmap
+        original_pixmap = QtGui.QPixmap(image_path)  
+        circular_pixmap = QtGui.QPixmap(original_pixmap.size())
+        circular_pixmap.fill(QtCore.Qt.transparent) 
         painter = QtGui.QPainter(circular_pixmap)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         path = QtGui.QPainterPath()
-        path.addEllipse(0, 0, original_pixmap.width(), original_pixmap.height())  # Draw an ellipse with the original size
+        path.addEllipse(0, 0, original_pixmap.width(), original_pixmap.height())
         painter.setClipPath(path)
-        painter.drawPixmap(0, 0, original_pixmap)  # Draw the original image onto the circular pixmap
+        painter.drawPixmap(0, 0, original_pixmap) 
         painter.end()
-        self.circular_pixmap = circular_pixmap  # Save the circular pixmap for rotation
-        self.updatePixmap()  # Update the pixmap when initializing
+        self.circular_pixmap = circular_pixmap 
+        self.updatePixmap()
 
     def updatePixmap(self):
         transformed_pixmap = self.circular_pixmap.transformed(QTransform().rotate(self.rotationAngle))
-        self.label.setPixmap(transformed_pixmap)  # Set the transformed pixmap directly to the label
+        self.label.setPixmap(transformed_pixmap)
     def stopRotation(self):
-        self.rotateTimer.stop()  # Dừng QTimer để ngừng xoay
-        self.rotationAngle = 0  # Đặt góc xoay về 0
-        self.updatePixmap()  # Cập nhật hình ảnh để hiển thị góc xoay mới
+        self.rotateTimer.stop()
+        self.rotationAngle = 0  
+        self.updatePixmap() 
 
 
     def rotateImage(self):
-        self.rotationAngle += 2  # Tăng góc xoay
+        self.rotationAngle += 2
         if self.rotationAngle >= 360:
             self.rotationAngle = 0
-        self.updatePixmap()  # Cập nhật pixmap trên label
+        self.updatePixmap() 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
