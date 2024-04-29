@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPainter, QPainterPath, QPixmap, QTransform
 from PyQt5.QtCore import Qt  # Đảm bảo import Qt để dùng Qt.Horizontal
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("Home Music Player")
+        MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(641, 1000)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.tam_dung.setFont(font)
         self.tam_dung.setText("")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("image/stop.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("image/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tam_dung.setIcon(icon5)
         self.tam_dung.setIconSize(QtCore.QSize(32, 32))
         self.tam_dung.setObjectName("tam_dung")
@@ -158,7 +158,7 @@ class Ui_MainWindow(object):
         self.dung_lai.setFont(font)
         self.dung_lai.setText("")
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("image/ket_thuc.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap("image/stop-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.dung_lai.setIcon(icon8)
         self.dung_lai.setIconSize(QtCore.QSize(32, 32))
         self.dung_lai.setObjectName("dung_lai")

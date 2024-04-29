@@ -141,7 +141,6 @@ class MainWindow(QMainWindow):
         
     #chuyên trang
     # Chuyển trang
-        # Chuyển trang
     # Trong hàm show_list_music của main.py
     def show_list_music(self):
         from unity.main_list_music import Main_List_Music_MainWindow
@@ -314,6 +313,7 @@ class MainWindow(QMainWindow):
         pygame.mixer.music.stop()  # Dừng nhạc
         self.uic.stopRotation()  # Dừng xoay
         self.__playMusic = False
+        self.currentTime = 0
 
     # Phát nhạc theo ID
     def playMusicToID(self, id):
