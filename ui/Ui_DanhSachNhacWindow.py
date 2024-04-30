@@ -48,7 +48,7 @@ class Ui_DanhSachNhacWindow(object):
             if song.image and song.image.strip():
                 pixmap = loadImageFromUrl(song.image)
             else:
-                pixmap = QtGui.QPixmap('image/tai_nghe.jpg')
+                pixmap = QtGui.QPixmap('image/MUSIC.jpg')
             songImage.setPixmap(pixmap)
 
             songName = QtWidgets.QLabel(groupBox)
@@ -133,18 +133,66 @@ class Ui_DanhSachNhacWindow(object):
         self.refresh_ui()
     # In class Ui_DanhSachNhacWindow
     def refresh_ui(self):
-        # Remove the old widgets from the gridLayout
-        for i in reversed(range(self.gridLayout.count())): 
-            widget_to_remove = self.gridLayout.itemAt(i).widget()
-            # remove it from the layout list
+        # Clear the old widgets from the gridLayout
+        while self.gridLayout.count() > 0:
+            widget_to_remove = self.gridLayout.itemAt(0).widget()
             self.gridLayout.removeWidget(widget_to_remove)
-            # remove it from the gui
             widget_to_remove.setParent(None)
-        
+
         # Reload the songs from the database
         self.songs = SongDao().SelectList()
-        # Call setupUi again or another method to repopulate the song list
-        self.setupUi(self.DanhSachNhacWindow, self.songs)
+
+        # Rebuild the UI with the updated song list
+        for i, song in enumerate(self.songs):
+            groupBox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
+            groupBox.setObjectName(f"groupBox_{i+1}")
+            groupBox.setMinimumSize(QtCore.QSize(171, 201))
+            groupBox.setMaximumSize(QtCore.QSize(171, 201))
+
+            songImage = QtWidgets.QLabel(groupBox)
+            songImage.setGeometry(QtCore.QRect(4, 20, 161, 111))
+            songImage.setText("")
+            songImage.setScaledContents(True)
+            songImage.setObjectName(f"songImage_{i+1}")
+
+            if song.image and song.image.strip():
+                pixmap = loadImageFromUrl(song.image)
+            else:
+                pixmap = QtGui.QPixmap('image/MUSIC.jpg')
+            songImage.setPixmap(pixmap)
+
+            songName = QtWidgets.QLabel(groupBox)
+            songName.setGeometry(QtCore.QRect(10, 130, 151, 31))
+            font = QtGui.QFont()
+            font.setBold(True)
+            font.setWeight(75)
+            songName.setFont(font)
+            songName.setObjectName(f"songName_{i+1}")
+            songName.setText(song.name)
+
+            artistName = QtWidgets.QLabel(groupBox)
+            artistName.setGeometry(QtCore.QRect(10, 160, 151, 31))
+            artistName.setObjectName(f"artistName_{i+1}")
+            artistName.setText(song.artist_name)
+
+            playButton = QtWidgets.QPushButton(groupBox)
+            playButton.setGeometry(QtCore.QRect(120, 150, 41, 41))
+            font = QtGui.QFont()
+            font.setPointSize(24)
+            playButton.setFont(font)
+            playButton.setText("")
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("image/play-button.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            playButton.setIcon(icon)
+            playButton.setIconSize(QtCore.QSize(32, 32))
+            playButton.setObjectName(f"playButton_{i+1}")
+
+            self.gridLayout.addWidget(groupBox, i // 3, i % 3)
+
+            # Connect the context menu for each group box
+            groupBox.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            groupBox.customContextMenuRequested.connect(lambda point, s=song.id, g=groupBox: self.show_context_menu(point, s, g))
+
 
     def make_song_clickable(self, song_id):
         def on_click(event):

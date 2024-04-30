@@ -428,7 +428,7 @@ class MainWindow(QMainWindow):
                     pixmap = QtGui.QPixmap(music.image)
                 self.uic.setCircularImage(pixmap)
             else:
-                self.uic.setCircularImage("./image/tai_nghe.jpg")
+                self.uic.setCircularImage("./image/MUSIC.jpg")
 
             # Chọn hàng trong bảng liên quan đến bài hát đang phát
             cel = self.findIndexSongTable(self.index)

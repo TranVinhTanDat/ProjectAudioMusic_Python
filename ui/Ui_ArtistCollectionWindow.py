@@ -44,7 +44,7 @@ class Ui_ArtistCollectionWindow(object):
             if artist.image:  
                 pixmap = self.load_image(artist.image)  # Load image here
             else:
-                pixmap = QtGui.QPixmap("image/tai_nghe.jpg")
+                pixmap = QtGui.QPixmap("image/MUSIC.jpg")
             artistImage.setPixmap(pixmap)
             artistImage.setScaledContents(True)
             artistImage.setObjectName(f"artistImage_{i+1}")

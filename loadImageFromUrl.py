@@ -23,4 +23,4 @@ def loadImageFromUrl(url):
         # Nếu là tệp cục bộ, trả về QPixmap từ tệp
         return QtGui.QPixmap(url)
     
-    return QtGui.QPixmap("image/tai_nghe.jpg")  # Sử dụng hình ảnh mặc định nếu không hợp lệ
+    return QtGui.QPixmap("image/MUSIC.jpg")  # Sử dụng hình ảnh mặc định nếu không hợp lệ

@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         self.anh1 = QtWidgets.QLabel(self.groupBox)
         self.anh1.setGeometry(QtCore.QRect(4, 20, 161, 111))
         self.anh1.setText("")
-        self.anh1.setPixmap(QtGui.QPixmap("image/tai_nghe.jpg"))
+        self.anh1.setPixmap(QtGui.QPixmap("image/MUSIC.jpg"))
         self.anh1.setScaledContents(True)
         self.anh1.setObjectName("anh1")
         self.ten1 = QtWidgets.QLabel(self.groupBox)

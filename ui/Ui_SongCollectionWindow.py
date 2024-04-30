@@ -38,7 +38,7 @@ class Ui_SongCollectionWindow(object):
                 pixmap = loadImageFromUrl(song.image)
             else:
                 # Đường dẫn đến hình ảnh mặc định, bạn cần thay thế bằng hình ảnh mặc định của mình
-                pixmap = QtGui.QPixmap('image/tai_nghe.jpg')
+                pixmap = QtGui.QPixmap('image/MUSIC.jpg')
             songImage.setPixmap(pixmap)
 
             songName = QtWidgets.QLabel(groupBox)

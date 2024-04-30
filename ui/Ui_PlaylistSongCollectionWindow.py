@@ -46,7 +46,7 @@ class Ui_PlaylistSongCollectionWindow(object):
             if song.image and song.image.strip():
                 pixmap = loadImageFromUrl(song.image)
             else:
-                pixmap = QtGui.QPixmap('image/tai_nghe.jpg')
+                pixmap = QtGui.QPixmap('image/MUSIC.jpg')
             songImage.setPixmap(pixmap)
 
             songName = QtWidgets.QLabel(groupBox)

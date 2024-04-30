@@ -33,7 +33,7 @@ class Ui_ArtistSongCollectionWindow(object):
             songImage.setScaledContents(True)
             songImage.setObjectName(f"songImage_{i+1}")
 
-            pixmap = QtGui.QPixmap('image/tai_nghe.jpg')  # Default image path
+            pixmap = QtGui.QPixmap('image/MUSIC.jpg')  # Default image path
             if song.image and song.image.strip():
                 pixmap = loadImageFromUrl(song.image)
             songImage.setPixmap(pixmap)

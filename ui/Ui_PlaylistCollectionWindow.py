@@ -165,7 +165,7 @@ class Ui_PlaylistCollectionWindow(object):
             elif playlist.image and os.path.exists(playlist.image):
                 pixmap = QtGui.QPixmap(playlist.image)
             else:
-                pixmap = QtGui.QPixmap("image/tai_nghe.jpg")
+                pixmap = QtGui.QPixmap("image/MUSIC.jpg")
             
             playlistImage.setPixmap(pixmap)
             playlistImage.setScaledContents(True)
