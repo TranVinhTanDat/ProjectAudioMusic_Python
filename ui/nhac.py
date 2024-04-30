@@ -2,6 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPainter, QPainterPath, QPixmap, QTransform
 from PyQt5.QtCore import Qt  # Đảm bảo import Qt để dùng Qt.Horizontal
+import sip
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -312,8 +314,20 @@ class Ui_MainWindow(object):
         self.updatePixmap()
 
     def updatePixmap(self):
+        if self.label is None or sip.isdeleted(self.label):
+            # print("Label does not exist or has been deleted.")
+            return  # Exit the function if label doesn't exist or has been deleted
+
+        if not self.label.isVisible():
+            # print("Label is not visible.")
+            return  # Optionally skip updates if not visible
+
         transformed_pixmap = self.circular_pixmap.transformed(QTransform().rotate(self.rotationAngle))
         self.label.setPixmap(transformed_pixmap)
+
+
+
+
     def stopRotation(self):
         self.rotateTimer.stop()
         self.rotationAngle = 0  

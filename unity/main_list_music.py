@@ -13,6 +13,9 @@ from loadImageFromUrl import loadImageFromUrl
 from dao.AlbumDAO import AlbumDAO
 from dao.SongDAO import SongDao
 from object.music import Music
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QWidget, QPushButton, QDesktopWidget, QLabel
+from PyQt5 import QtGui, QtCore, QtWidgets
+from functools import partial
 
 
 class Main_List_Music_MainWindow(QMainWindow):
@@ -24,11 +27,39 @@ class Main_List_Music_MainWindow(QMainWindow):
         self.list = songs
         self.getListSong()
         self.center_window()
+        self.uic.btnBack.clicked.connect(self.goBack)
 
+    def goBack(self):
+        from main import MainWindow
+        # Khởi tạo QStackedWidget
+        if not hasattr(self, 'stacked_widget'):
+            self.stacked_widget = QStackedWidget(self)
+        # Tạo và thêm MainWindow vào QStackedWidget
+        self.list_music_widget = MainWindow()
+        self.stacked_widget.addWidget(self.list_music_widget)
+        self.setCentralWidget(self.stacked_widget)
+        self.stacked_widget.setCurrentWidget(self.list_music_widget)
     def getListSong(self):
         self.list = self.controller.listSong()
         self.uic.setupUi(self, self.list)
         self.connect_buttons()
+    def playMusic(self,id):
+            from main import MainWindow
+            # Khởi tạo QStackedWidget
+            self.stacked_widget = QStackedWidget(self)
+            # Tạo hai trang con cho QStackedWidget
+            self.main_widget = Main_List_Music_MainWindow(self.list)
+            # self.main_widget.setObjectName("MainWidget")
+            # self.main_widget.setStyleSheet("#MainWidget { background-color: #000; }")
+            self.thu_vien = QPushButton("Hãy click tôi để chuyển vào trang chủ nhé nhé !!!", self.main_widget)
+            self.thu_vien.setGeometry(50, 50, 250, 50)
+            
+            self.list_music_widget = MainWindow()
+            self.stacked_widget.addWidget(self.main_widget)
+            self.stacked_widget.addWidget(self.list_music_widget)
+            self.list_music_widget.playMusicToID(id)
+            self.setCentralWidget(self.stacked_widget)
+            self.stacked_widget.setCurrentWidget(self.list_music_widget)
 
     def showAlbumCollection(self):
         self.album_collection_window = QMainWindow()
@@ -57,6 +88,13 @@ class Main_List_Music_MainWindow(QMainWindow):
         self.uic.btnAlbum.clicked.connect(self.showAlbumCollection)
         self.uic.btnSinger.clicked.connect(self.showArtistCollection)
         self.uic.btnPlaylist.clicked.connect(self.showPlaylistCollection)
+        play_buttons = self.findChildren(QtWidgets.QPushButton, QtCore.QRegExp("playButton_*"))
+        for button in play_buttons:
+            song_index = int(button.objectName().split('_')[-1]) - 1  # Chỉ số của bài hát trong danh sách
+            if song_index < len(self.list):
+                button.clicked.connect(partial(self.playMusic, self.list[song_index].id))
+            else:
+                print("Index out of range in connect_buttons")
 
     def center_window(self, window=None):
         if window is None:

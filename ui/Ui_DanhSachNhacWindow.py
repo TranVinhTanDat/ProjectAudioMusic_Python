@@ -6,6 +6,8 @@ from dao.SongDAO import SongDao
 from dao.TypeDAO import TypeDao
 from Ui_SongCollectionWindow import Ui_SongCollectionWindow
 from unity.main_list_music import *
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QWidget, QPushButton, QDesktopWidget, QLabel
+
 class Ui_DanhSachNhacWindow(object):
     def setupUi(self, DanhSachNhacWindow, songs):  
         self.songs = songs
@@ -81,7 +83,7 @@ class Ui_DanhSachNhacWindow(object):
             groupBox.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
             groupBox.customContextMenuRequested.connect(lambda point, s=song.id, g=groupBox: self.show_context_menu(point, s, g))
 
-            playButton.clicked.connect(lambda _, s=song.id: self.playMusic(s))
+            # playButton.clicked.connect(partial(self.playMusic, song.id))  # sửa self.list[0].id thành song.id
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         DanhSachNhacWindow.setCentralWidget(self.centralwidget)
@@ -90,7 +92,7 @@ class Ui_DanhSachNhacWindow(object):
         self.btnBack.setGeometry(QtCore.QRect(500, 30, 120, 40))  # Tăng chiều rộng và chiều cao
         self.btnBack.setObjectName("btnBack")
         self.btnBack.setText("⬅️ Back")  # Thêm icon và văn bản cho nút
-        self.btnBack.clicked.connect(lambda: self.go_back(DanhSachNhacWindow))
+        # self.btnBack.clicked.connect(lambda: self.go_back(DanhSachNhacWindow))
 
         self.btnAlbum = QtWidgets.QPushButton(self.centralwidget)
         self.btnAlbum.setGeometry(QtCore.QRect(80, 30, 120, 40))  # Tăng chiều rộng và chiều cao
@@ -144,12 +146,6 @@ class Ui_DanhSachNhacWindow(object):
         # Call setupUi again or another method to repopulate the song list
         self.setupUi(self.DanhSachNhacWindow, self.songs)
 
-    def playMusic(self, song_id):
-        from main import MainWindow  # Import lớp MainWindow từ file main.py
-        self.main_window = MainWindow()
-        self.main_window.playMusicToID(song_id)
-        self.main_window.show()
-    
     def make_song_clickable(self, song_id):
         def on_click(event):
             self.show_song_details(song_id)
@@ -165,8 +161,8 @@ class Ui_DanhSachNhacWindow(object):
         self.ui.setupUi(self.songCollectionWindow, songs)
         self.songCollectionWindow.show()
 
-    def go_back(self, DanhSachNhacWindow):
-        DanhSachNhacWindow.close()
+    # def go_back(self, DanhSachNhacWindow):
+    #     DanhSachNhacWindow.close()
 
     def show_album(self):
         # Thêm mã để hiển thị cửa sổ danh sách Album ở đây

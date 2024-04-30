@@ -239,10 +239,10 @@ class MainWindow(QMainWindow):
             self.add_guest()
 
     # Chuyển trang
-    def show_list_music(self):
-        # Tạo một cửa sổ mới của lớp Main_List_Music_MainWindow
-        self.list_music_window = Main_List_Music_MainWindow(self.list)
-        self.list_music_window.show()
+    # def show_list_music(self):
+    #     # Tạo một cửa sổ mới của lớp Main_List_Music_MainWindow
+    #     self.list_music_window = Main_List_Music_MainWindow(self.list)
+    #     self.list_music_window.show()
  
     
     # Tìm kiếm
