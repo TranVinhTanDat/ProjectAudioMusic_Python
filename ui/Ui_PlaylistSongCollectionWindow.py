@@ -19,9 +19,9 @@ class Ui_PlaylistSongCollectionWindow(object):
 
         # Tạo một QLabel để hiển thị hình ảnh nền
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000)) 
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  
+        self.background_label.setScaledContents(True)  
         self.background_label.setObjectName("background_label")
 
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -120,16 +120,14 @@ class Ui_PlaylistSongCollectionWindow(object):
         songs = PlaylistDAO().get_songs_in_playlist(current_playlist_id)
         ui.setupUi(MainWindow, songs)
 
-    # Thêm hàm để hiển thị menu context
-# Thêm hàm để hiển thị menu context
+   
+    # hiển thị menu context
     def show_context_menu(self, point, song_id, groupBox):
         context_menu = QtWidgets.QMenu()
         delete_action = context_menu.addAction("Delete Song")
         
-        # Use the groupBox to map to global coordinates
         global_point = groupBox.mapToGlobal(point)
         
-        # Hiển thị menu tại vị trí chuột phải được click
         action = context_menu.exec_(global_point)
         if action == delete_action:
             self.delete_song(song_id, groupBox.window())
@@ -161,7 +159,7 @@ class AddMusicDialog(QtWidgets.QDialog):
         layout.addWidget(self.song_combobox)
 
         self.add_button = QtWidgets.QPushButton("Add")
-        self.add_button.clicked.connect(self.add_song_to_playlist)  # Connect the button to the method
+        self.add_button.clicked.connect(self.add_song_to_playlist) 
         layout.addWidget(self.add_button)
 
         self.setLayout(layout)
@@ -172,7 +170,7 @@ class AddMusicDialog(QtWidgets.QDialog):
         for song in songs:
             self.song_combobox.addItem(song.name, song.id)
 
-    def add_song_to_playlist(self):  # Define the method to add the song to the playlist
+    def add_song_to_playlist(self):  
             selected_song_id = self.song_combobox.currentData()
             if selected_song_id:
                 playlistDAO = PlaylistDAO()

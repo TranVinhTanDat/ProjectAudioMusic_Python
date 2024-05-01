@@ -17,11 +17,11 @@ class Ui_DanhSachNhacWindow(object):
         self.centralwidget = QtWidgets.QWidget(DanhSachNhacWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-        # Tạo một QLabel để hiển thị hình ảnh nền
+        
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))
+        self.background_label.setScaledContents(True)
         self.background_label.setObjectName("background_label")
 
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -31,7 +31,7 @@ class Ui_DanhSachNhacWindow(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 620, 789))
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
 
-        self.DanhSachNhacWindow = DanhSachNhacWindow  # Thêm dòng này để lưu trữ QMainWindow
+        self.DanhSachNhacWindow = DanhSachNhacWindow 
 
         for i, song in enumerate(self.songs):
             groupBox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
@@ -89,27 +89,27 @@ class Ui_DanhSachNhacWindow(object):
         DanhSachNhacWindow.setCentralWidget(self.centralwidget)
 
         self.btnBack = QtWidgets.QPushButton(self.centralwidget)
-        self.btnBack.setGeometry(QtCore.QRect(500, 30, 120, 40))  # Tăng chiều rộng và chiều cao
+        self.btnBack.setGeometry(QtCore.QRect(500, 30, 120, 40))
         self.btnBack.setObjectName("btnBack")
-        self.btnBack.setText("⬅️ Back")  # Thêm icon và văn bản cho nút
+        self.btnBack.setText("⬅️ Back")  
         # self.btnBack.clicked.connect(lambda: self.go_back(DanhSachNhacWindow))
 
         self.btnAlbum = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAlbum.setGeometry(QtCore.QRect(80, 30, 120, 40))  # Tăng chiều rộng và chiều cao
+        self.btnAlbum.setGeometry(QtCore.QRect(80, 30, 120, 40))  
         self.btnAlbum.setObjectName("btnAlbum")
-        self.btnAlbum.setText("📀 Album")  # Thêm icon và văn bản cho nút
+        self.btnAlbum.setText("📀 Album")  
         self.btnAlbum.clicked.connect(self.show_album)
 
         self.btnSinger = QtWidgets.QPushButton(self.centralwidget)
-        self.btnSinger.setGeometry(QtCore.QRect(200, 30, 120, 40))  # Tăng chiều rộng và chiều cao
+        self.btnSinger.setGeometry(QtCore.QRect(200, 30, 120, 40))  
         self.btnSinger.setObjectName("btnSinger")
-        self.btnSinger.setText("🎤 Singer")  # Thêm icon và văn bản cho nút
+        self.btnSinger.setText("🎤 Singer")  
         self.btnSinger.clicked.connect(self.show_singer)
 
         self.btnPlaylist = QtWidgets.QPushButton(self.centralwidget)
-        self.btnPlaylist.setGeometry(QtCore.QRect(320, 30, 120, 40))  # Tăng chiều rộng và chiều cao
+        self.btnPlaylist.setGeometry(QtCore.QRect(320, 30, 120, 40))  
         self.btnPlaylist.setObjectName("btnPlaylist")
-        self.btnPlaylist.setText("🎵 Playlist")  # Thêm icon và văn bản cho nút
+        self.btnPlaylist.setText("🎵 Playlist")  
         self.btnPlaylist.clicked.connect(self.show_playlist)
 
 
@@ -126,10 +126,8 @@ class Ui_DanhSachNhacWindow(object):
             self.delete_song(song_id)
     # In class Ui_DanhSachNhacWindow
     def delete_song(self, song_id):
-        # Here you call the delete method of SongDao to delete the song
         song_dao = SongDao()
         song_dao.delete_song(song_id)
-        # Now you should refresh the UI to reflect the deletion
         self.refresh_ui()
     # In class Ui_DanhSachNhacWindow
     def refresh_ui(self):
@@ -213,15 +211,12 @@ class Ui_DanhSachNhacWindow(object):
     #     DanhSachNhacWindow.close()
 
     def show_album(self):
-        # Thêm mã để hiển thị cửa sổ danh sách Album ở đây
         pass
 
     def show_singer(self):
-        # Thêm mã để hiển thị cửa sổ danh sách Singer ở đây
         pass
 
     def show_playlist(self):
-        # Thêm mã để hiển thị cửa sổ danh sách Playlist ở đây
         pass
 
     def retranslateUi(self, DanhSachNhacWindow):

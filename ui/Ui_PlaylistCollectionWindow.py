@@ -25,9 +25,9 @@ class Ui_PlaylistCollectionWindow(object):
 
         # Tạo một QLabel để hiển thị hình ảnh nền
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))
+        self.background_label.setScaledContents(True)
         self.background_label.setObjectName("background_label")
 
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -36,22 +36,22 @@ class Ui_PlaylistCollectionWindow(object):
         self.addMusicButton = QtWidgets.QPushButton(self.centralwidget)
         
         self.addMusicButton.setObjectName("addMusicButton")
-        self.addMusicButton.setText("🎵 Add Music to Playlist")  # Thêm icon và văn bản cho nút
-        self.addMusicButton.setFixedSize(180, 40)  # Đặt kích thước mới (chiều dài, chiều rộng)
+        self.addMusicButton.setText("🎵 Add Music to Playlist")
+        self.addMusicButton.setFixedSize(180, 40)
 
         self.horizontalLayout.addWidget(self.addMusicButton)
 
         self.btnAddPlaylist = QtWidgets.QPushButton(self.centralwidget)
         self.btnAddPlaylist.setObjectName("btnAddPlaylist")
-        self.btnAddPlaylist.setText("📚 Add Playlist")  # Thêm icon và văn bản cho nút
-        self.btnAddPlaylist.setFixedSize(180, 40)  # Đặt kích thước mới (chiều dài, chiều rộng)
+        self.btnAddPlaylist.setText("📚 Add Playlist") 
+        self.btnAddPlaylist.setFixedSize(180, 40)  
 
         self.horizontalLayout.addWidget(self.btnAddPlaylist)
 
         self.btnBack = QtWidgets.QPushButton(self.centralwidget)
         self.btnBack.setObjectName("btnBack")
-        self.btnBack.setText("⬅️ Back")  # Thêm icon và văn bản cho nút
-        self.btnBack.setFixedSize(180, 40)  # Đặt kích thước mới (chiều dài, chiều rộng)
+        self.btnBack.setText("⬅️ Back")  
+        self.btnBack.setFixedSize(180, 40)  
 
         self.horizontalLayout.addWidget(self.btnBack)
 

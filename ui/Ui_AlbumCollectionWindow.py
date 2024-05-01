@@ -19,9 +19,9 @@ class Ui_AlbumCollectionWindow(object):
 
         # Tạo một QLabel để hiển thị hình ảnh nền
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))
+        self.background_label.setScaledContents(True)
         self.background_label.setObjectName("background_label")
 
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -40,7 +40,7 @@ class Ui_AlbumCollectionWindow(object):
             albumImage = QtWidgets.QLabel(groupBox)
             albumImage.setGeometry(QtCore.QRect(4, 20, 161, 111))
             albumImage.setText("")
-            pixmap = loadImageFromUrl(album.cover_image)  # Sử dụng hàm loadImageFromUrl để tải hình ảnh từ URL
+            pixmap = loadImageFromUrl(album.cover_image)
             albumImage.setPixmap(pixmap)
             albumImage.setScaledContents(True)
             albumImage.setObjectName(f"albumImage_{i+1}")
@@ -57,7 +57,7 @@ class Ui_AlbumCollectionWindow(object):
             releaseDate = QtWidgets.QLabel(groupBox)
             releaseDate.setGeometry(QtCore.QRect(10, 160, 151, 31))
             releaseDate.setObjectName(f"releaseDate_{i+1}")
-            releaseDate.setText(album.release_date.strftime('%d-%m-%Y'))  # Chuyển đổi thành chuỗi ngày phát hành
+            releaseDate.setText(album.release_date.strftime('%d-%m-%Y'))
 
             # Make album cover and title clickable
             albumImage.mousePressEvent = self.make_album_clickable(album.id)
@@ -103,19 +103,16 @@ class Ui_AlbumCollectionWindow(object):
     # Method to handle click event
     def make_album_clickable(self, album_id):
         def on_click(event):
-            # Retrieve the list of songs in the clicked album
             songs = AlbumDAO().get_songs_in_album(album_id)
-            # Assuming that show_song_collection will handle the display of songs
             self.show_song_collection(songs)
         return on_click
     
     # Method to display song collection
     def show_song_collection(self, songs):
-        # This assumes you have a QMainWindow or similar to show the songs
         self.songCollectionWindow = QtWidgets.QMainWindow()
         self.ui = Ui_SongCollectionWindow()
-        self.ui.setupUi(self.songCollectionWindow, songs)  # Pass songs to the song collection UI
-        self.center_window(self.songCollectionWindow)  # Chỉnh cửa sổ để nằm chính giữa màn hình
+        self.ui.setupUi(self.songCollectionWindow, songs) 
+        self.center_window(self.songCollectionWindow)
         self.songCollectionWindow.show()
 
     # Method to go back
@@ -132,7 +129,7 @@ class Ui_AlbumCollectionWindow(object):
                 groupBox.setTitle(_translate("AlbumCollectionWindow", f"Album {i+1}"))
                 albumTitle = groupBox.findChild(QtWidgets.QLabel, f"albumTitle_{i+1}")
                 if albumTitle:
-                    albumTitle.setText(_translate("AlbumCollectionWindow", album.name))  # Sử dụng tên thực của album
+                    albumTitle.setText(_translate("AlbumCollectionWindow", album.name))
 
 
 if __name__ == "__main__":

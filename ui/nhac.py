@@ -14,9 +14,9 @@ class Ui_MainWindow(object):
 
         # Thêm một QLabel để hiển thị hình ảnh nền
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QtGui.QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000)) 
+        self.background_label.setPixmap(QtGui.QPixmap("image/anhnen11.jpg")) 
+        self.background_label.setScaledContents(True) 
         self.background_label.setObjectName("background_label")
 
         # Các phần còn lại của giao diện như trong mã của bạn
@@ -217,29 +217,29 @@ class Ui_MainWindow(object):
 
         # Nhãn thời gian
         self.time_label = QtWidgets.QLabel(self.widget_2)
-        self.time_label.setGeometry(QtCore.QRect(10, 20, 41, 16))  # Vị trí nhãn
-        self.time_label.setObjectName("time_label")  # Không đổi tên
+        self.time_label.setGeometry(QtCore.QRect(10, 20, 41, 16))  
+        self.time_label.setObjectName("time_label")  
         
         self.ten_bai_hat = QtWidgets.QLabel(self.centralwidget)
-        self.ten_bai_hat.setGeometry(QtCore.QRect(90, 330, 400, 41))  # Adjusted width for centering
-        self.ten_bai_hat.setAlignment(QtCore.Qt.AlignCenter)  # Align text to the center horizontally
+        self.ten_bai_hat.setGeometry(QtCore.QRect(90, 330, 400, 41))  
+        self.ten_bai_hat.setAlignment(QtCore.Qt.AlignCenter)  
         self.ten_bai_hat.setObjectName("ten_bai_hat")
         font = QtGui.QFont()
-        font.setPointSize(14)  # Increase font size
-        font.setBold(True)  # Make text bold
+        font.setPointSize(14)  
+        font.setBold(True)  
         self.ten_bai_hat.setFont(font)
 
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(0, 0, 100, 40))  # Thay đổi kích thước và chỉnh sửa vị trí nếu cần
+        self.pushButton_2.setGeometry(QtCore.QRect(0, 0, 100, 40))  
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_2.setFixedWidth(100)  # Đặt chiều rộng mới
-        self.pushButton_2.setFixedHeight(40)  # Đặt chiều cao mới
+        self.pushButton_2.setFixedWidth(100)  
+        self.pushButton_2.setFixedHeight(40)  
 
         self.thu_vien = QtWidgets.QPushButton(self.centralwidget)
-        self.thu_vien.setGeometry(QtCore.QRect(100, 0, 110, 40))  # Thay đổi kích thước và chỉnh sửa vị trí nếu cần
+        self.thu_vien.setGeometry(QtCore.QRect(100, 0, 110, 40))  
         self.thu_vien.setObjectName("thu_vien")
-        self.thu_vien.setFixedWidth(110)  # Đặt chiều rộng mới
-        self.thu_vien.setFixedHeight(40)  # Đặt chiều cao mới
+        self.thu_vien.setFixedWidth(110)  
+        self.thu_vien.setFixedHeight(40)  
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -253,46 +253,39 @@ class Ui_MainWindow(object):
 
 
         # Đảm bảo khởi tạo các thuộc tính trước khi sử dụng
-        self.rotationAngle = 0  # Khởi tạo góc xoay
-        self.rotateTimer = QTimer()  # Tạo timer cho việc xoay hình ảnh
+        self.rotationAngle = 0  
+        self.rotateTimer = QTimer()  
         self.rotateTimer.timeout.connect(self.rotateImage)
-        self.rotateTimer.start(20)  # Xoay hình ảnh mỗi 100 ms
+        self.rotateTimer.start(20)  
 
-        self.setCircularImage("image/MUSIC.jpg")  # Nên đặt sau các khởi tạo thuộc tính liên quan
+        self.setCircularImage("image/MUSIC.jpg")  
         self.rotateTimer = QTimer()
         self.rotateTimer.timeout.connect(self.rotateImage)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-         # Tạo một danh sách chứa các nút
+         
         self.buttons = [self.ngau_nhien, self.lap_lai, self.tam_dung, self.dung_lai, self.phat, self.lui_bai, self.chuyen_bai]
 
-        # Khởi tạo một từ điển để lưu trạng thái của các nút
+        
         self.button_states = {button: False for button in self.buttons}
 
-        # Kết nối sự kiện clicked của các nút với một hàm xử lý
+        
         for button in self.buttons:
             if button in [self.ngau_nhien, self.lap_lai]:
-                # Đối với các nút ngau_nhien và lap_lai, sử dụng một hàm xử lý riêng
                 button.clicked.connect(lambda checked=False, button=button: self.toggle_special_buttons(button))
             else:
-                # Đối với các nút còn lại, sử dụng hàm xử lý chung
                 button.clicked.connect(lambda checked=False, button=button: self.toggle_button_color(button))
 
     def toggle_special_buttons(self, button):
-        # Kiểm tra trạng thái hiện tại của nút
         if self.button_states[button]:
-            # Nếu nút đã được nhấn trước đó, đặt màu mặc định và cập nhật trạng thái
             button.setStyleSheet("")
             self.button_states[button] = False
         else:
-            # Nếu nút chưa được nhấn trước đó, đặt màu và cập nhật trạng thái
             button.setStyleSheet("background-color: rgba(0, 255, 0, 100);")
             self.button_states[button] = True
 
     def toggle_button_color(self, button):
-        # Duyệt qua danh sách các nút
         for btn in self.buttons:
-            # Nếu nút được nhấn là nút hiện tại, thiết lập màu, ngược lại đặt lại màu mặc định
             if btn is button:
                 btn.setStyleSheet("background-color: rgba(0, 255, 0, 100);")
             else:
@@ -316,11 +309,11 @@ class Ui_MainWindow(object):
     def updatePixmap(self):
         if self.label is None or sip.isdeleted(self.label):
             # print("Label does not exist or has been deleted.")
-            return  # Exit the function if label doesn't exist or has been deleted
+            return  
 
         if not self.label.isVisible():
             # print("Label is not visible.")
-            return  # Optionally skip updates if not visible
+            return 
 
         transformed_pixmap = self.circular_pixmap.transformed(QTransform().rotate(self.rotationAngle))
         self.label.setPixmap(transformed_pixmap)

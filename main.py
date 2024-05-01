@@ -58,8 +58,6 @@ class MainWindow(QMainWindow):
     def check_database_connection(self):
         try:
             cursor = connect()
-            # Thực hiện một số thao tác với kết nối cơ sở dữ liệu, như thực hiện một truy vấn
-            # Ví dụ:
             cursor.execute("SELECT * FROM singer")
             rows = cursor.fetchall()
             print("Kết nối cơ sở dữ liệu thành công")
@@ -188,50 +186,39 @@ class MainWindow(QMainWindow):
 
     def addMusicToFile(self):
         root = tkinter.Tk()
-        root.withdraw()  # Ẩn cửa sổ tkinter
+        root.withdraw()
         currdir = "/"
         root.sourceFile = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select an audio file')
         
         if len(root.sourceFile) > 0:
             link = root.sourceFile
-            audio = MP3(link, ID3=ID3)  # Đảm bảo ID3 được tải
+            audio = MP3(link, ID3=ID3) 
             
-            # Lấy thông tin từ tag ID3
             name_music = audio.tags.get('TIT2', 'Unknown')
             artist_music = audio.tags.get('TPE1', 'Unknown')
             
-            # Chuyển đổi giá trị TPE1 thành chuỗi
             if isinstance(artist_music, list):
                 artist_music = ", ".join(artist_music)
             else:
                 artist_music = str(artist_music)
 
-            # Loại bỏ dấu ngoặc kép và dấu phẩy không mong muốn
             artist_music = re.sub(r'[",]', '', artist_music)
 
-            # Kiểm tra xem nghệ sĩ đã tồn tại trong cơ sở dữ liệu chưa
             artist_id = self.controller.getSingerIdByName(artist_music)
             if artist_id is None:
-                # Nếu không, thêm nghệ sĩ mới vào cơ sở dữ liệu và lấy id của nghệ sĩ mới
                 artist_id = self.controller.addSinger(artist_music)
 
-            # Lấy dữ liệu hình ảnh từ tag ID3 (APIC)
             image_path = None
             image_data = audio.tags.get('APIC:', None)
             if image_data:
-                # Lưu dữ liệu hình ảnh thành tệp
-                image_path = "image_" + os.path.basename(link) + ".jpg"  # Đường dẫn tệp mới
+                image_path = "image_" + os.path.basename(link) + ".jpg"  
                 with open(image_path, 'wb') as img_file:
-                    img_file.write(image_data.data)  # Lưu dữ liệu hình ảnh
-            
+                    img_file.write(image_data.data)  
             if not image_path:
-                # Nếu không có dữ liệu hình ảnh, sử dụng hình ảnh mặc định
                 image_path = 'https://i.scdn.co/image/ab67706f0000000281722192322800ae99c2ed06'
             
-            # Xác định hoặc gán giá trị cho biến type_name
-            type_name = "Pop"  # Xác định thể loại bài hát
+            type_name = "Pop"
             
-            # Thêm bài hát với thông tin nghệ sĩ, đường dẫn hình ảnh, và thể loại
             self.controller.addMusic(link, name_music, artist_id, image_path, type_name)
 
             self.list = self.controller.listSong()
@@ -246,8 +233,7 @@ class MainWindow(QMainWindow):
  
     
     # Tìm kiếm
-    # Update the search function
-    # Cập nhật hàm searchText để sử dụng searchByName từ SongDao
+
     def searchText(self):
         text = self.uic.tim_kiem.text().lower().strip()
         if text:
@@ -310,10 +296,11 @@ class MainWindow(QMainWindow):
              
     # Dừng nhạc
     def stopMusic(self):
-        pygame.mixer.music.stop()  # Dừng nhạc
-        self.uic.stopRotation()  # Dừng xoay
+        pygame.mixer.music.stop()
+        self.uic.stopRotation() 
         self.__playMusic = False
         self.currentTime = 0
+        self.timer.center
 
     # Phát nhạc theo ID
     def playMusicToID(self, id):
@@ -323,10 +310,10 @@ class MainWindow(QMainWindow):
         self.restartTimer()
     
     def rotateImage(self):
-        self.rotationAngle += 2  # Tăng góc xoay
+        self.rotationAngle += 2
         if self.rotationAngle >= 360:
             self.rotationAngle = 0
-        self.updatePixmap()  # Cập nhật pixmap trên label
+        self.updatePixmap()  
     # Hàng đợi nhạc
     def queuMusic(self):
         for value in self.list:
@@ -396,21 +383,17 @@ class MainWindow(QMainWindow):
         messagebox.showinfo("Error", "Không tìm thấy nguồn bài hát này")
    
     def playMusic(self):
-        # Dừng xoay hình ảnh trước khi phát nhạc mới
         self.uic.stopRotation()
 
-        # Đặt lại bộ đếm thời gian
-        if self.timer.is_alive():  # Kiểm tra xem bộ đếm thời gian có đang chạy không
-            self.timer.cancel()  # Hủy bộ đếm thời gian cũ
+        if self.timer.is_alive():
+            self.timer.cancel()  
 
         # Khởi tạo lại bộ đếm thời gian
-        self.timer = RepeatTimer(1, self.display)  # Cập nhật hiển thị mỗi giây
-        self.timer.start()  # Bắt đầu bộ đếm thời gian
+        self.timer = RepeatTimer(1, self.display)  
+        self.timer.start()  
 
-        # Đặt thời gian hiện tại về 0
         self.currentTime = 0
 
-        # Các bước còn lại của playMusic
         music = self.list[self.index]
         file_path = music.file_path
 
@@ -420,7 +403,6 @@ class MainWindow(QMainWindow):
             pygame.mixer.music.play()
             self.uic.ten_bai_hat.setText(music.name)
 
-            # Thiết lập ảnh đại diện
             if music.image:
                 if music.image.startswith("http://") or music.image.startswith("https://"):
                     pixmap = loadImageFromUrl(music.image)
@@ -434,13 +416,12 @@ class MainWindow(QMainWindow):
             cel = self.findIndexSongTable(self.index)
             if cel != -1:
                 self.uic.table_list.selectRow(cel)
-                self.uic.noi_dung_mp3.setMaximum(maxTime)  # Thiết lập giá trị tối đa cho thanh trượt
+                self.uic.noi_dung_mp3.setMaximum(maxTime)
 
-            # Khởi động lại xoay hình ảnh
-            self.uic.rotateTimer.start(20)  # Xoay mỗi 20ms
+            self.uic.rotateTimer.start(20)
 
         else:
-            self.showMessageError()  # Hiển thị thông báo lỗi nếu không tìm thấy bài hát
+            self.showMessageError() 
 
 
 
@@ -451,12 +432,10 @@ class MainWindow(QMainWindow):
     
     def pause_music(self):
         pygame.mixer.music.pause()
-
-        # Dừng xoay hình ảnh và bộ đếm thời gian
         self.uic.stopRotation()
 
-        if self.timer.is_alive():  # Kiểm tra nếu bộ đếm thời gian đang hoạt động
-            self.timer.cancel()  # Dừng bộ đếm thời gian
+        if self.timer.is_alive(): 
+            self.timer.cancel()
 
 
     
@@ -489,20 +468,18 @@ class MainWindow(QMainWindow):
         if not self.__playMusic:
             self.playMusic()
             self.__playMusic = True
-            self.uic.rotateTimer.start(20)  # Bắt đầu xoay khi nhạc phát
+            self.uic.rotateTimer.start(20)
             
-            # Kiểm tra trạng thái của timer trước khi khởi động lại
             if not self.timer.is_alive():
-                self.timer = RepeatTimer(1, self.display)  # Tạo một thể hiện mới của timer
-                self.timer.start()  # Khởi động timer mới
+                self.timer = RepeatTimer(1, self.display)
+                self.timer.start()
         else:
             pygame.mixer.music.unpause()
-            self.uic.rotateTimer.start(20)  # Tiếp tục xoay khi nhạc được phát lại
+            self.uic.rotateTimer.start(20) 
             
-            # Kiểm tra trạng thái của timer trước khi khởi động lại
             if not self.timer.is_alive():
-                self.timer = RepeatTimer(1, self.display)  # Tạo một thể hiện mới của timer
-                self.timer.start()  # Khởi động timer mới
+                self.timer = RepeatTimer(1, self.display)
+                self.timer.start()
 
 
     
@@ -562,17 +539,11 @@ class MainWindow(QMainWindow):
             
             self.add_guest()
     def center_window(self):
-        # Lấy kích thước màn hình
         screen_size = QDesktopWidget().screenGeometry(-1)
-
-        # Lấy kích thước của cửa sổ
         window_size = self.frameGeometry()
-
-        # Tính toán vị trí căn giữa cho cửa sổ
         left = (screen_size.width() - window_size.width()) // 2
         top = (screen_size.height() - window_size.height()) // 15
 
-        # Di chuyển cửa sổ đến vị trí căn giữa
         self.move(left, top)
 
 

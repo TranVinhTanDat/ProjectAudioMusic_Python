@@ -11,9 +11,9 @@ class Ui_SongCollectionWindow(object):
 
         # Tạo một QLabel để hiển thị hình ảnh nền
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  
+        self.background_label.setScaledContents(True)  
         self.background_label.setObjectName("background_label")
 
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -63,7 +63,7 @@ class Ui_SongCollectionWindow(object):
             playButton.setFont(font)
             playButton.setText("")
             icon = QtGui.QIcon()
-            # Cung cấp đường dẫn đúng đắn đến biểu tượng play của bạn
+            
             icon.addPixmap(QtGui.QPixmap("image/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             playButton.setIcon(icon)
             playButton.setIconSize(QtCore.QSize(32, 32))
@@ -83,7 +83,7 @@ class Ui_SongCollectionWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Song Collection"))
 
     def playMusic(self, song_id):
-        from main import MainWindow  # Import lớp MainWindow từ file main.py
+        from main import MainWindow  
         self.main_window = MainWindow()
         self.main_window.playMusicToID(song_id)
         self.main_window.show()

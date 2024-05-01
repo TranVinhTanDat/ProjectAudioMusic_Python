@@ -12,11 +12,11 @@ class Ui_ArtistCollectionWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-        # Tạo một QLabel để hiển thị hình ảnh nền
+        
         self.background_label = QtWidgets.QLabel(self.centralwidget)
-        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))  # Đặt kích thước là toàn bộ cửa sổ
-        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))  # Đặt hình ảnh nền
-        self.background_label.setScaledContents(True)  # Thay đổi kích thước hình ảnh để vừa với kích thước của QLabel
+        self.background_label.setGeometry(QtCore.QRect(0, 0, 641, 1000))
+        self.background_label.setPixmap(QPixmap("image/anhnen11.jpg"))
+        self.background_label.setScaledContents(True)
         self.background_label.setObjectName("background_label")
 
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -67,9 +67,9 @@ class Ui_ArtistCollectionWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.btnBack = QtWidgets.QPushButton(self.centralwidget)
-        self.btnBack.setGeometry(QtCore.QRect(500, 30, 120, 40))  # Tăng chiều rộng và chiều cao
+        self.btnBack.setGeometry(QtCore.QRect(500, 30, 120, 40))
         self.btnBack.setObjectName("btnBack")
-        self.btnBack.setText("⬅️ Back")  # Thêm icon và văn bản cho nút
+        self.btnBack.setText("⬅️ Back")
         self.btnBack.clicked.connect(lambda: self.go_back(MainWindow))
 
 
@@ -92,7 +92,7 @@ class Ui_ArtistCollectionWindow(object):
 
             self.artistSongCollectionUI.setupUi(self.artistSongCollectionWindow, songs)
             self.artistSongCollectionWindow.show()
-            self.center_window(self.artistSongCollectionWindow)  # Di chuyển cửa sổ vào giữa màn hình
+            self.center_window(self.artistSongCollectionWindow)
         return on_click
     
     def go_back(self, MainWindow):
@@ -109,14 +109,10 @@ class Ui_ArtistCollectionWindow(object):
     def center_window(self, window=None):
         if window is None:
             window = MainWindow
-        # Lấy kích thước màn hình
         screen_size = QtWidgets.QDesktopWidget().screenGeometry(-1)
-        # Lấy kích thước của cửa sổ
         window_size = window.frameGeometry()
-        # Tính toán vị trí trung tâm cho cửa sổ
         left = (screen_size.width() - window_size.width()) // 2
         top = (screen_size.height() - window_size.height()) // 15
-        # Di chuyển cửa sổ vào vị trí trung tâm
         window.move(left, top)
 
 if __name__ == "__main__":
