@@ -111,8 +111,8 @@ class SongDao:
         list_music = []
         for row in result:
             # Tạo đối tượng Type và Singer với thông tin tương ứng
-            music_type = Type(row[4], row[5])  # Vị trí cột 4 và 5 là id và tên của Type
-            singer = Singer(row[6], row[7])  # Vị trí cột 6 và 7 là id và tên của Singer
+            music_type = Type(row[4], row[5])
+            singer = Singer(row[6], row[7])
 
             # Tạo đối tượng Music với đối tượng Type và Singer
             music = Music(row[0], row[1], row[2], row[3], music_type, singer)

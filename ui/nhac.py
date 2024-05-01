@@ -264,7 +264,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
          
-        self.buttons = [self.ngau_nhien, self.lap_lai, self.tam_dung, self.dung_lai, self.phat, self.lui_bai, self.chuyen_bai]
+        self.buttons = [self.ngau_nhien, self.lap_lai, self.tam_dung, self.phat, self.lui_bai, self.chuyen_bai]
 
         
         self.button_states = {button: False for button in self.buttons}

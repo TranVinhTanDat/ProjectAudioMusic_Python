@@ -122,39 +122,22 @@ class MainWindow(QMainWindow):
         self.playMusic()
         self.restartTimer()
         
-    #thêm bài hát từ file
-    # def addMusicToFile(self):    
-    #     root =  tkinter.Tk()
-    #     root.withdraw() #use to hide tkinter window 
-    #     currdir = "/"
-    #     root.sourceFile = filedialog.askopenfilename(parent=root, initialdir= currdir, title='Please select a directory')
-    #     if len(root.sourceFile) > 0:
-    #         link = root.sourceFile
-    #         name = os.path.basename(root.sourceFile)
-    #         name = name[:-4]
-    #         self.controller.addMusic(link,name)
-    #         self.list = self.controller.listSong()
-    #         self.listTemp = self.createListTeam()
-    #         self.add_guest()
-        
+    
     #chuyên trang
-    # Chuyển trang
-    # Trong hàm show_list_music của main.py
     def show_list_music(self):
         from unity.main_list_music import Main_List_Music_MainWindow
         self.timer.cancel()
-        # Khởi tạo QStackedWidget
         self.stacked_widget = QStackedWidget(self)
         
-        # Tạo hai trang con cho QStackedWidget
         self.main_widget = MainWindow()
         # self.main_widget.setObjectName("MainWidget")
         # self.main_widget.setStyleSheet("#MainWidget { background-color: #000; }")
-        self.thu_vien = QPushButton("Thu vien!!!", self.main_widget)
+        self.thu_vien = QPushButton("Kham Pha", self.main_widget)
         self.thu_vien.setGeometry(50, 50, 250, 50)
         
         # Truyền danh sách bài hát self.list vào Main_List_Music_MainWindow
-        self.list_music_widget = Main_List_Music_MainWindow(self.list)  # Truyền danh sách bài hát vào đây
+        self.list_music_widget = Main_List_Music_MainWindow(self.list) 
+
         self.list_music_widget.index = self.index
         self.list_music_widget.currentTime = self.currentTime
         self.list_music_widget.volumn = self.uic.volume.value() 
@@ -177,18 +160,11 @@ class MainWindow(QMainWindow):
         self.restartTimer()
         
     # Thêm bài hát từ file
-
-    # def rotateImage(self):
-    #     self.rotationAngle += 2  # Tăng góc xoay
-    #     if self.rotationAngle >= 360:
-    #         self.rotationAngle = 0
-    #     self.updatePixmap()  # Cập nhật pixmap trên label
-
     def addMusicToFile(self):
         root = tkinter.Tk()
         root.withdraw()
         currdir = "/"
-        root.sourceFile = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select an audio file')
+        root.sourceFile = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Select audio file')
         
         if len(root.sourceFile) > 0:
             link = root.sourceFile
@@ -224,16 +200,8 @@ class MainWindow(QMainWindow):
             self.list = self.controller.listSong()
             self.listTemp = self.createListTeam()
             self.add_guest()
-
-    # Chuyển trang
-    # def show_list_music(self):
-    #     # Tạo một cửa sổ mới của lớp Main_List_Music_MainWindow
-    #     self.list_music_window = Main_List_Music_MainWindow(self.list)
-    #     self.list_music_window.show()
- 
     
     # Tìm kiếm
-
     def searchText(self):
         text = self.uic.tim_kiem.text().lower().strip()
         if text:
@@ -245,14 +213,12 @@ class MainWindow(QMainWindow):
 
     def refresh_song_list(self):
         self.uic.table_list.clear()
-        self.add_guest()  # Add songs to the UI from self.listTemp
+        self.add_guest() 
 
     # Reset song list to all songs
     def reset_song_list(self):
         self.listTemp = self.createListTeam()
         self.refresh_song_list()
-
-
 
     # Tua nhạc
     def setCurrentTime(self):
@@ -298,9 +264,12 @@ class MainWindow(QMainWindow):
     def stopMusic(self):
         pygame.mixer.music.stop()
         self.uic.stopRotation() 
-        self.__playMusic = False
-        self.currentTime = 0
-        self.timer.center
+        self.__playMusic = False 
+        self.currentTime = 0  
+
+        if self.timer.is_alive():
+            self.timer.cancel()
+
 
     # Phát nhạc theo ID
     def playMusicToID(self, id):
@@ -357,7 +326,6 @@ class MainWindow(QMainWindow):
         else:
             self.index = len(self.list)-1
         
-        # Chơi nhạc
         self.playMusic()
         self.restartTimer()
     
@@ -424,9 +392,6 @@ class MainWindow(QMainWindow):
             self.showMessageError() 
 
 
-
-
-
     def random(self):
         return random.randint(0, len(self.list)-2)
     
@@ -481,9 +446,6 @@ class MainWindow(QMainWindow):
                 self.timer = RepeatTimer(1, self.display)
                 self.timer.start()
 
-
-    
-
     def add_guest(self):
             rowPosition = self.uic.table_list.rowCount()
             self.uic.table_list.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
@@ -517,8 +479,6 @@ class MainWindow(QMainWindow):
                     self.uic.table_list.setItem(index, 1, QtWidgets.QTableWidgetItem(type_name))
                     self.uic.table_list.setItem(index, 2, QtWidgets.QTableWidgetItem(singer_name))
                     index += 1
-
-
 
     def duration(self, song):
         return int(float((ffmpeg.probe(song)['format']['duration'])))
